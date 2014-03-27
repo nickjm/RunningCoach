@@ -1,6 +1,8 @@
-package com.example.runningcoach;
+package com.gmail.kkleidal.runningcoach.gui;
 
 import java.util.Locale;
+
+import com.example.runningcoach.R;
 
 
 import android.os.Bundle;
