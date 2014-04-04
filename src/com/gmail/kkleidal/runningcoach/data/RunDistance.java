@@ -2,7 +2,7 @@ package com.gmail.kkleidal.runningcoach.data;
 
 import java.util.Comparator;
 
-public class RunDistance {
+public class RunDistance implements MultAdd<RunDistance> {
 	/**
 	 * Only data member stored:  number of meters as a double
 	 */
@@ -73,22 +73,20 @@ public class RunDistance {
 	
 	// Operations:
 	/**
-	 * Adds two RunDistance object and returns a new RunDistance as their sum
-	 * @param r1 the first addend
-	 * @param r2 the second addend
+	 * Adds this RunDistance object with another and returns a new RunDistance as their sum
+	 * @param r1 the other addend
 	 * @return the sum of the two objects as a new RunDistance object
 	 */
-	public static RunDistance add( RunDistance r1, RunDistance r2 ) {
-		return new RunDistance( r1._m + r2._m );
+	public RunDistance add( RunDistance r1) {
+		return new RunDistance( this._m + r1._m );
 	}
 	/**
-	 * Multiplies a RunDistance object by a scalar
-	 * @param r1 the RunDistance object
+	 * Multiplies this RunDistance object by a scalar and returns a new RunDistance representing the product
 	 * @param scalar the scalar as a double
 	 * @return the product of the RunDistance object and the scalar as a new RunDistance object
 	 */
-	public static RunDistance multiply( RunDistance r1, double scalar) {
-		return new RunDistance( r1._m * scalar );
+	public RunDistance multiply( double scalar) {
+		return new RunDistance( this._m * scalar );
 	}
 	/**
 	 * Subtracts one RunDistance object from another and returns the difference

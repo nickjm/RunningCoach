@@ -7,7 +7,7 @@ import java.util.Comparator;
  * @author kkleidal
  *
  */
-public class RunTime {
+public class RunTime implements MultAdd<RunTime> {
 	/**
 	 * Only member data stored:  number of milliseconds as a long
 	 */
@@ -82,22 +82,20 @@ public class RunTime {
 
 	// Operations
 	/**
-	 * Adds two RunTime objects together and returns a new RunTime object whose length is the sum
-	 * @param t1 the first addend
-	 * @param t2 the second addend
+	 * Adds this RunTime object to another returns a new RunTime object whose length is the sum
+	 * @param t1 the other addend
 	 * @return the new RunTime object representing the sum
 	 */
-	public static RunTime add( RunTime t1, RunTime t2) {
-		return new RunTime( t1._ms + t2._ms );
+	public RunTime add( RunTime t1 ) {
+		return new RunTime( this._ms + t1._ms );
 	}
 	/**
-	 * Multiplies a RunTime object by a scalar and returns a new RunTime object whose length is the product
-	 * @param t1 the RunTime object
+	 * Multiplies this RunTime by a scalar and returns a new RunTime object whose length is the product
 	 * @param scalar the scalar as a double
-	 * @return the product of the RunTime object and the scalar as a RunTime
+	 * @return the product of this RunTime object and the scalar as a new RunTime object
 	 */
-	public static RunTime multiply( RunTime t1, double scalar ) {
-		return new RunTime( (long)( t1._ms * scalar ) );
+	public RunTime multiply( double scalar ) {
+		return new RunTime( (long)( this._ms * scalar ) );
 	}
 	/**
 	 * Returns the time difference between two RunTime objects

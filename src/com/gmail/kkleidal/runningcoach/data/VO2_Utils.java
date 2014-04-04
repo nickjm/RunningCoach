@@ -28,44 +28,26 @@ final class VO2_Utils {
 	static final double C8 = -4.60;
 	
 	/**
-	 * Calculates the oxygen cost of running at a given speed (for the given interval)
-	 * @param time the duration of the interval
-	 * @param dist the distance of the interval
-	 * @return the oxygen cost of running at the speed of the interval
-	 */
-	public static double oxygenCost( RunTime time, RunDistance dist ) {
-		// t is in minutes; d is in meters
-		// C left (t,d right ) =0.182258× {d} over {t} +0.000104× {{d} ^ {2}} over {{t} ^ {2}} -4.60
-		double t = time.inUnit( RunTime.U_MINUTES );
-		double d = dist.inUnit( RunDistance.U_METERS );
-		double dt = d / t;
-		return C6 * dt + C7 * dt * dt + C8;
-	}
-	/**
 	 * Calculates the oxygen cost of running at a given speed
 	 * @param speed the speed
 	 * @return the oxygen cost of the interval
 	 */
 	public static double oxygenCost( RunSpeed speed ) {
-		return oxygenCost( speed.inUnit( RunDistance.U_METERS, RunTime.U_SECONDS ), 1.0 ); // Meters per second
+		// t is in minutes; d is in meters
+		// C left (t,d right ) =0.182258× {d} over {t} +0.000104× {{d} ^ {2}} over {{t} ^ {2}} -4.60
+		double t = 1.0; //time.inUnit( RunTime.U_MINUTES );
+		double d = speed.inUnits( RunDistance.U_METERS,  RunTime.U_MINUTES ); //dist.inUnit( RunDistance.U_METERS );
+		double dt = d / t;
+		return C6 * dt + C7 * dt * dt + C8;
 	}
 
 	/**
 	 * Calculates the VDOT from a given race interval
-	 * @param time the time of the race
-	 * @param dist the distance of the race
-	 * @return 
-	 */
-	public static double vdot( RunTime time, RunDistance dist ) {
-		return oxygenCost( time, dist ) / intensity( time );
-	}
-	/**
-	 * Calculates the VDOT from a given race interval
-	 * @param interval the race interval
+	 * @param interval the RunInterval representing the race
 	 * @return 
 	 */
 	public static double vdot( RunInterval interval ) {
-		return vdot( interval.getTime(), interval.getDistance() );
+		return oxygenCost( interval.getSpeed() ) / intensity( interval.getTime() );
 	}
 	
 	static long BIN_SEARCH_MAX = 2419200000L; // 3 weeks in milliseconds
@@ -85,7 +67,7 @@ final class VO2_Utils {
 		double calcVdot = 0.0;
 		do {
 			mid = ( low + high ) / 2L;
-			calcVdot = vdot( new RunTime( mid ), eventDist );
+			calcVdot = vdot( new RunInterval( new RunTime( mid ), eventDist ) );
 			if ( calcVdot > currentVdot ) {
 				low = mid;
 			} else {
@@ -113,7 +95,7 @@ final class VO2_Utils {
 	 * @return the VO2 max
 	 */
 	public static double vo2max( RunSpeed speed ) {
-		double sp = speed.inUnit( RunDistance.U_METERS, RunTime.U_MINUTES );
+		double sp = speed.inUnits( RunDistance.U_METERS, RunTime.U_MINUTES );
 		return C9 * sp + C10;
 	}
 }
